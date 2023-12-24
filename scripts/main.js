@@ -2,6 +2,18 @@ const ROCK_STRING = "Rock";
 const PAPER_STRING = "Paper";
 const SCISSORS_STRING = "Scissors";
 
+const btnStart = document.querySelector('#btnStart');
+const btnStop = document.querySelector('#btnStop');
+const btnRock = document.querySelector('#btnRock');
+const btnPaper = document.querySelector('#btnPaper');
+const btnScissors = document.querySelector('#btnScissors');
+const lastPlayerChoice = document.querySelector('#playerLabel');
+const lastComputerChoice = document.querySelector('#computerLabel');
+const history = document.querySelector('#history');
+const playerScore = document.querySelector('#playerScore');
+const computerScore = document.querySelector('#computerScore');
+const finalResult = document.querySelector('#finalResult');
+
 function getComputerChoice() {
     const choice = (Math.floor(Math.random() * 3));
 
@@ -17,19 +29,66 @@ function getComputerChoice() {
     }
 }
 
+function addLastChoices(playerChoice, computerChoice) {
+    lastPlayerChoice.textContent = playerChoice;
+    lastComputerChoice.textContent = computerChoice;
+}
+
+function addHistory(messageToAdd) {
+    let historyElement = document.createElement('div');
+    historyElement.textContent = messageToAdd;
+    history.appendChild(historyElement);
+}
+
+function processScore(won) {
+    let playerScoreValue;
+    let computerScoreValue;
+    
+    if (won) {
+        playerScoreValue = parseInt(playerScore.textContent, 10) + 1;
+        playerScore.textContent = playerScoreValue;
+    }
+    else {
+        computerScoreValue = parseInt(computerScore.textContent, 10) + 1;
+        computerScore.textContent = computerScoreValue;
+    }
+
+    if (playerScoreValue == 5) {
+        finalResult.textContent = 'END OF GAME: PLAYER WINS!';
+        finalResult.style.color = 'blue';
+        endGame();
+    }
+    else if (computerScoreValue == 5) {
+        finalResult.textContent = 'END OF GAME: COMPUTER WINS!';
+        finalResult.style.color = 'red';
+        endGame();
+    }
+}
+
 function playRound(computerChoice, playerChoice) {
     
-    console.log(playerChoice + " vs. " + computerChoice);
+    let choices = playerChoice + " vs. " + computerChoice;
+
+    if (playerChoice == computerChoice) {
+        addHistory(choices + " = IT'S A TIE!");
+    }
+    else {
         
-    if (playerChoice == ROCK_STRING) {
-        return playRock(computerChoice);
+        let result;
+        if (playerChoice == ROCK_STRING) {
+            result = playRock(computerChoice);
+        }
+        else if (playerChoice == PAPER_STRING) {
+            result = playPaper(computerChoice);
+        }
+        else if (playerChoice == SCISSORS_STRING) {
+            result = playScissors(computerChoice);
+        }
+        addHistory(choices + " = " + result.message);
+        processScore(result.won);
     }
-    else if (playerChoice == PAPER_STRING) {
-        return playPaper(computerChoice);
-    }
-    else if (playerChoice == SCISSORS_STRING) {
-        return playScissors(computerChoice);
-    }
+
+    addLastChoices(playerChoice, computerChoice);
 }
 
 function playRock(computerChoice) {
@@ -63,77 +122,66 @@ function convertProperCase(inputString) {
     return inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase();
 }
 
-function game() {
-        
-    // Keep on playing round if it's a tie.
-    let playerChoiceString;
-    let computerChoiceString;
-    let proceed = true;
-
-    // This loop is to handle ties so that the user will enter the choice again.
-    while (proceed) {
-        
-        playerChoiceString = prompt("What's your choice: Rock, Paper or Scissors?");
-        // Handle if user pressed Cancel.
-        if (playerChoiceString == null) {
-            break;
-        }
-
-        // Convert player entry to Proper Case. 
-        playerChoiceString = convertProperCase(playerChoiceString);
-
-        if (playerChoiceString != ROCK_STRING && playerChoiceString != PAPER_STRING && playerChoiceString != SCISSORS_STRING) {
-            alert("You entered an invalid choice. Please enter again.");
-            // Assign to the same choice of the computer to continue entering values.
-            continue;
-        }
-
-        // Computer choice already in constant that's in Proper Case already.
-        computerChoiceString = getComputerChoice();
-        
-        console.log(playerChoiceString);
-        console.log(computerChoiceString);
-        
-        // If it's a tie, replay the round.
-        if (playerChoiceString.toLowerCase() == computerChoiceString.toLowerCase()) {
-            alert("It's a Tie! Replay the Round.");
-        }
-        else {
-            // Different choices, exit loop and get results.
-            proceed = false;
-        }
-    }
-
-    // To support cases where user Cancelled entry to not throw an error.
-    if (playerChoiceString != null) {
-        result = playRound(computerChoiceString, playerChoiceString); 
-        console.log(result.message);
-        return result;
-    }
+function startGame() {
+    btnStart.disabled = true;
+    btnStop.disabled = false;
+    btnRock.disabled = false;
+    btnPaper.disabled = false;
+    btnScissors.disabled = false;
+    initializeFields();
 }
 
-let playerScore = 0;
-let computerScore = 0;
-
-for (let i = 1; i <= 5; i++) {
-
-    const result = game();
-
-    // If user clicked cancel in entry, END game immediately. Provide an out for the user.
-    if (result == undefined) {
-        break;
-    }
-
-    (result.won ? playerScore++ : computerScore++);
-
-    console.log(`Current Score: Player: ${playerScore} Computer: ${computerScore}`);
-
-    if (playerScore === 3) {
-        alert(`Player wins! ${playerScore} to ${computerScore}`);
-        break;
-    }
-    else if (computerScore == 3) {
-        alert(`Computer wins! ${computerScore} to ${playerScore}`);
-        break;
-    }
+function endGame() {
+    btnStart.disabled = false;
+    btnStop.disabled = true;
+    btnRock.disabled = true;
+    btnPaper.disabled = true;
+    btnScissors.disabled = true;
 }
+
+function initializeFields() {
+    lastPlayerChoice.textContent = '';
+    lastComputerChoice.textContent = '';
+    playerScore.textContent = '0';
+    computerScore.textContent = '0';
+    history.innerHTML = '';
+    finalResult.innerHTML = '';
+}
+
+(function () {
+    btnStop.disabled = true;
+    btnRock.disabled = true;
+    btnPaper.disabled = true;
+    btnScissors.disabled = true;
+
+    btnStart.addEventListener('click', () => {
+        startGame();
+    });
+
+    btnStop.addEventListener('click', () => {
+        endGame();
+    })
+
+    let buttons = document.querySelector('#buttons');
+    let computerChoice;
+    buttons.addEventListener('click', function(e) {
+        let target = e.target;
+        switch (target.id) {
+            case 'btnRock':
+                playRound(getComputerChoice(), ROCK_STRING);
+                break;
+            case 'btnPaper':
+                playRound(getComputerChoice(), PAPER_STRING);
+                break;
+            case 'btnScissors':
+                playRound(getComputerChoice(), SCISSORS_STRING);
+                break;
+            default:
+                break;
+        }
+    })
+
+}) ();
+
+
+

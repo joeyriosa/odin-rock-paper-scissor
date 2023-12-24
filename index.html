@@ -3,9 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./scripts/main.js" defer></script>
 </head>
 <body>
-    <script src="./scripts/main.js"></script>
+    <h1>ROCK - PAPER - SCISSORS GAME</h1>
+    <div>
+        <div id="mainButtons">
+            <button id="btnStart" class="mainButton">Start Game</button>
+            <button id="btnStop" class="mainButton">Stop Game</button>
+        </div>
+        <div id="buttons">
+            <button id="btnRock" class="mainButton actionButton">Rock</button>
+            <button id="btnPaper" class="mainButton actionButton">Paper</button>
+            <button id="btnScissors" class="mainButton actionButton">Scissors</button>
+        </div>
+        <div>
+            <div class="labelContainer">
+                <div class="label">Last Player Choice: </div>
+                <div id="playerLabel"></div>
+            </div>
+            <div class="labelContainer">
+                <div class="label">Last Computer Choice: </div>
+                <div id="computerLabel"></div>
+            </div>
+            <div class="labelContainer">
+                <div class="card">
+                    <div class="label">Player Score: </div>
+                    <div id="playerScore">0</div>
+                </div>
+                <div class="card">
+                    <div class="label">Computer Score: </div>
+                    <div id="computerScore">0</div>
+                </div>
+
+            </div>
+            <div id="finalResult">
+                
+            </div>
+        </div>
+
+        <div class="label">History:</div>
+        <div id="history">
+        </div>
+    </div>
     
 </body>
 </html>

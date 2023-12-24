@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 100px;
+}
+
+.mainButton {
+    padding: 10px 20px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    background-color: #007bff; /* Blue color, you can change this */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.mainButton:hover {
+    background-color: #0056b3;
+}
+
+.mainButton:disabled {
+    background-color: #ddd; /* Light gray for disabled state */
+    color: #666; /* Darker text color for disabled state */
+    cursor: not-allowed;
+}
+
+.actionButton {
+    background-color: #ff4500;
+}
+
+.actionButton:hover {
+    background-color: #ff8c00;
+}
+
+div {
+    margin: 3px;
+}
+
+.labelContainer {
+    display: flex;
+}
+
+.label {
+    font-weight: bold;
+}
+
+#playerScore {
+    font-weight: bold;
+    color: blue;
+}
+
+#computerScore {
+    font-weight: bold;
+    color: red;
+}
+
+.card {
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
